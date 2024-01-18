@@ -1,0 +1,25 @@
+export const userQueryParams = {
+  allowedIncludes: [
+    'employment_infos',
+    'reporting_officers',
+    'employment_infos.reporting_officer',
+    'current_employment_info',
+    'current_employment_info.department',
+    'current_employment_info.current_employee_designation',
+    'user_roles.role',
+    'billing_info',
+  ],
+  allowedFilters: [
+    'blood_group',
+    'nid',
+    'religion',
+    'email',
+    'dob',
+    'userName',
+    'first_name',
+    'last_name',
+    'id',
+    'user_roles',
+  ],
+  allowedSorts: ['created_at'],
+};

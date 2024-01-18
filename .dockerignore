@@ -1,0 +1,17 @@
+build/*
+yarn.lock
+yarn-error.log
+.env
+.env.development
+
+logs/*
+log/error.log
+
+node_modules
+Dockerfile
+
+.dockerignore
+.git
+.gitignore
+
+docker-compose*

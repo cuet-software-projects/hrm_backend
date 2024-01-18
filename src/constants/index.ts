@@ -1,0 +1,1 @@
+export const INVOICE_TAX_PERCENTAGE = 15;

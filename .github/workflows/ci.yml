@@ -1,0 +1,40 @@
+
+name: CI
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: ["development"]
+jobs:
+   build:
+    name: Build and Test
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+      - name: Cache Yarn packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+            
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+      - name: Check format
+        run: yarn lint:check-format
+      - name: Run Test
+        run: yarn test

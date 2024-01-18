@@ -1,0 +1,649 @@
+@baseurl = http://localhost:5057/api/v1
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyMmI1ZTJkNS04ZGYwLTQ3NWEtODAyMC0zYmQ1YWU2ZThjZjkiLCJpYXQiOjE3MDQxOTE3MjYsImV4cCI6MTcwNjc1OTkxODU0MH0.sR5ZMPozBJaMAkVq3bQC2rquXaFvlFqktpT6NYW_czw
+###
+GET  {{baseurl}}/mail-test
+Content-Type: application/json
+###
+GET {{baseurl}}/me
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
+### 
+POST {{baseurl}}/role
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "name": "admin",
+  "description": ""
+}
+
+
+### 
+GET {{baseurl}}/roles/all
+Content-Type: application/json 
+Authorization: bearer {{token}}
+### 
+GET {{baseurl}}/roles?&page=1&limit=10
+Content-Type: application/json 
+Authorization: bearer {{token}}
+### 
+POST {{baseurl}}/department
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "name":"Software Dev",
+  "code": "27",
+  "description": "",
+  "prefix_code": "10"
+}
+
+###
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+
+{
+   "email":"ratulbhowmick66@gmail.com",
+   "password":"12345678"
+}
+
+### 
+PATCH {{baseurl}}/users/ea8159f8-d7bb-405e-a2e8-76651ac61ef4/reset-password
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "new_password":"12345678",
+  "old_password":"123456789"
+}
+### 
+GET {{baseurl}}/departments/all
+Content-Type: application/json 
+Authorization: bearer {{token}}
+### 
+GET {{baseurl}}/departments?&page=1&limit=10&sorts=-created_at
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+###
+DELETE  {{baseurl}}/departments/e43054cf-5818-42b3-8727-17871f3a0eac
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+
+### 
+PATCH  {{baseurl}}/departments/7990c2d1-bdcf-4759-ab01-6a202bd3f7fd
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  
+  "prefix_code": "30"
+}
+
+
+### 
+POST {{baseurl}}/designation
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "name":"Junior Software Developer"
+}
+
+### 
+GET {{baseurl}}/designations/all
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+### 
+GET {{baseurl}}/designations?&page=1&limit=10
+Content-Type: application/json 
+Authorization: bearer {{token}}
+###
+DELETE  {{baseurl}}/designations/e32291c0-9888-4cef-bb48-6688a1c00c40
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+### 
+PATCH  {{baseurl}}/designations/ef886a97-3808-498a-8730-1f59f0266b3c
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  
+  "name": "Software Dev"
+}
+
+
+### 
+POST {{baseurl}}/team
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "name":"Software",
+  "description": ""
+}
+
+### 
+GET {{baseurl}}/teams/all
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+### 
+GET {{baseurl}}/teams?&page=1&limit=10
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+###
+DELETE  {{baseurl}}/teams/91c2ad4a-9e67-4d58-a564-0d65a9884a74
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+### 
+PATCH  {{baseurl}}/teams/bac384f3-7bc7-440d-b6fb-9697576158d7
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  
+  "description": "Software Dev"
+}
+
+
+### 
+POST {{baseurl}}/branch
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "name":"Main Office",
+  "address": "CUET",
+  "code": "DHK"
+}
+
+### 
+GET {{baseurl}}/branches/all
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+
+### 
+GET {{baseurl}}/branches?&page=1&limit=10
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+
+###
+DELETE  {{baseurl}}/branches/86dd8635-c3a4-43f2-88e1-2cd2c8da43bd
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+### 
+PATCH  {{baseurl}}/branches/0d913503-b708-4cdf-88b5-aa82f9601be2
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  
+  "address": "14/3/A, Rayer Bazar, Dhaka"
+}
+
+
+###
+POST {{baseurl}}/user
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "first_name":"Harun",
+  "last_name":"Hasan",
+  "userName":"harun",
+  "email":"harun@gmail.com",
+  "dob":"1997-10-15",
+  "fathers_name":"Ratan Bhowmick",
+  "mothers_name":"Ratna Bhowmick",
+  "blood_group":"A+",
+  "contact_number":"01515279018",
+  "emergency_contact_number":"01818419162",
+  "nid":"193sdsdssdsdsddsddddsdsdfd23",
+  "permanent_address": "Tangail",
+  "password": "1234567sd89",
+  "present_address":"CUET",
+  "tshirt":"XXXL",
+  "tin_number":"sdsdsddsdssdsddsdksd45313",
+  "gender":"MALE",
+  "religion":"HINDUISM"
+}
+###
+
+PATCH {{baseurl}}/user/c3757109-37c1-433d-a771-6edc26450a68
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "first_name":"Ratul",
+  "last_name":"Bhowmick",
+  "userName":"ratul",
+  "dob":"1997-10-15",
+  "blood_group":"A+",
+  "contact_number":"01818419162",
+  "emergency_contact_number":"01818419162",
+  "nid":"1997932950600014963",
+  "permanent_address": "Tangail",
+  "password": "123456748",
+  "present_address":"CUET",
+  "tshirt":"XXXL",
+  "tin_number":"lwe34sk45413",
+  "gender":"MALE",
+  "religion":"HINDUISM",
+  "email": "ratulbhowmick66@gmail.com"
+}
+###
+GET {{baseurl}}/users/all
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+GET {{baseurl}}/users?&includes=current_employment_info.current_employee_designation,billing_info
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+GET {{baseurl}}/users/0d0041b0-0c3f-46c4-b919-0a18460964ce
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+GET {{baseurl}}/employees/all
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+POST {{baseurl}}/employee
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "user_id":"c3757109-37c1-433d-a771-6edc26450a68",
+  "branch_id": "b62a84ec-c691-463a-a113-34239d454fc2",
+  "department_id":"8990c2d1-bdcf-4759-ab01-6a202bd3f7fd",
+  "work_type":"REMOTE",
+  "isCurrent":true,
+  "joined_at": "2021-10-23",
+  "reporting_officer_id": "4456ced4-738f-475e-894b-c017620e7146",
+  "designation_id":"ef886a97-3808-498a-8730-1f59f0266b3c",
+  "reason":"JOINING",
+  "salary": 600
+}
+
+
+###
+PATCH  {{baseurl}}/employees/1ff78f28-bfe1-49e1-9579-23b8be87173a
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "salary": 7000,
+  "designation_id":"ef886a97-3808-498a-8730-1f59f0266b3c",
+  "reason":"JOINING"
+}
+
+###
+GET {{baseurl}}/users?&page=1&limit=10&includes=current_employment_info.department,current_employment_info.current_employee_designation,user_roles.role,billing_info&search=01515279019
+Content-Type: application/application/json
+Authorization: bearer {{token}}
+
+###
+GET {{baseurl}}/employees/1ff78f28-bfe1-49e1-9579-23b8be87173a
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+POST {{baseurl}}/employees/attendance
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "employee_id":"1ff78f28-bfe1-49e1-9579-23b8be87173a",
+  "work_type":"OFFICE"
+}
+
+###
+GET {{baseurl}}/employees/attendances/all
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
+###
+GET {{baseurl}}/employees/attendances?&page=1&limit=10&includes=employee_info.user&filters[first_name]=tanvir
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
+###
+GET {{baseurl}}/employees/1ff78f28-bfe1-49e1-9579-23b8be87173a/attendances
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+GET {{baseurl}}/employees/ff425ee8-aea1-4699-a42b-004f1944e881/designation-salary/history
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+PATCH {{baseurl}}/employees/attendances/ad189312-3112-47d1-a20f-218516930910
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "work_descriptions":"asdklasnd lalksdn lasd alksdn lasndl kansdlk nalskdn laksdn laksdn lasn lasnd laknsl dnlaskd nalksd laksdn laksndeirjwenwe fln"
+}
+
+###
+PUT {{baseurl}}/employees/attendances/markings/ad189312-3112-47d1-a20f-218516930910
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "markings": 10
+}
+###
+POST {{baseurl}}/employees/1ff78f28-bfe1-49e1-9579-23b8be87173a/payroll
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "salary":7000,
+  "bonus":2000,
+  "reason":"PUJA",
+  "status":"DRAFT",
+  "date":"2023-09-25"
+}
+
+###
+GET {{baseurl}}/employees/1ff78f28-bfe1-49e1-9579-23b8be87173a/payrolls?&sorts=salary
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+GET {{baseurl}}/employees/payrolls/all
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+PUT {{baseurl}}/employees/1ff78f28-bfe1-49e1-9579-23b8be87173a/payroll/4b7e606e-c0eb-43c5-8104-581c2a2f230a
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "status":"DRAFT",
+  "salary":20000
+}
+
+###
+GET {{baseurl}}/employees/1ff78f28-bfe1-49e1-9579-23b8be87173a/bonuses?&sorts=bonus
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+GET {{baseurl}}/employees/bonuses/all
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+PUT  {{baseurl}}/employees/1ff78f28-bfe1-49e1-9579-23b8be87173a/bonus/fba61ae0-0453-420b-9165-7f76b411f288
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "status":"DRAFT",
+  "bonus":3400,
+  "reason":"YOOOO"
+}
+
+###
+PUT {{baseurl}}/users/c2e3084c-e75d-4f95-b8df-2132d4633001/set-employment-info
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "current_employee_id":""
+}
+
+
+###
+POST {{baseurl}}/users/4456ced4-738f-475e-894b-c017620e7146/roles
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "role_ids":["b3729da8-f188-452c-9476-07d841819039","b84bfcd9-1614-4c52-8a8f-292c2fce95a7","ec6c32ef-6f07-4c17-9837-a21b717b3728"]
+}
+
+###
+POST {{baseurl}}/employees/145c37c7-37fc-4dc0-b249-af283c51d4d5/leave
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "started_at":"2023-09-25",
+  "ended_at":"2023-09-27",
+  "leave_type":"SICK"
+}
+
+###
+PATCH {{baseurl}}/employees/a2bd965b-f682-46d0-8f07-c430995478c1/leave/9a4307a7-8a25-4083-b81b-75520ae3e2cb
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "started_at":"2023-09-27",
+  "ended_at":"2023-09-29",
+  "leave_type":"CASUAL"
+}
+###
+PATCH {{baseurl}}/employees/145c37c7-37fc-4dc0-b249-af283c51d4d5/leave-approval/8cae18cb-75ee-4615-be7e-8c6463878555
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "leave_status":"APPROVED"
+}
+
+### 
+GET {{baseurl}}/employees/145c37c7-37fc-4dc0-b249-af283c51d4d5/leaves?&page=1&limit=10
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+GET {{baseurl}}/employees/leaves?&page=1&limit=10&includes=employee_info.user,action_taken_by.user
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+###
+GET  {{baseurl}}/employees/leaves/c47c5bfa-4146-4834-872f-28ea5ed35a2d
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+GET  {{baseurl}}/employees/145c37c7-37fc-4dc0-b249-af283c51d4d5/leave-overview
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+GET  {{baseurl}}/invoices/all
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+GET  {{baseurl}}/invoices?&search=DL
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+GET  {{baseurl}}/invoices/DLG-555
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+POST  {{baseurl}}/invoices
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "invoice_subject": "test invoice subject",
+  "issue_date": "2023-10-27T08:30:49Z",
+  "due_date": "2023-10-27T08:30:49Z",
+  "user_id": "22b5e2d5-8df0-475a-8020-3bd5ae6e8cf9",
+  "invoice_items": [
+    {
+      "name": "item 1",
+      "price": 150,
+      "quantity": 2
+    },
+    {
+      "name": "item 2",
+      "price": 250,
+      "quantity": 5
+    }
+  ],
+  "invoice_id":"DLG-3348ssd"
+}
+
+### 
+PATCH  {{baseurl}}/invoices/DLG-3348ssd
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "amount_paid": 100,
+  "status": "PARTIALLY_PAID"
+}
+
+### 
+GET {{baseurl}}/invoices?&page=1&limit=3&sorts=-created_at&filters[user_id]=03205f95-a204-4522-9fc7-48da3482773c&includes=user,received_by,child_invoices
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+GET {{baseurl}}/users/03205f95-a204-4522-9fc7-48da3482773c/billing-info
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+GET {{baseurl}}/billing-infos?page=1&limit=10&sorts=created_at&includes=user
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+POST {{baseurl}}/billing-info
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "user_id": "00faacde-00da-4e1f-b7c8-82e9700a6a06",
+  "address_line_1": "dummy address 1",
+  "address_line_2": "dummy address 2",
+  "city": "Dhaka",
+  "state": "Dhaka",
+  "country": "Bangladesh",
+  "zip_code": "404"
+}
+
+### 
+PATCH {{baseurl}}/billing-info/3169898a-a6df-400d-bfc0-f4d1a27fc886
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "address_line_1": "Jaymangalpur, Chouddagram, Cumilla",
+  "address_line_2": "Housing Estate, Cumilla City Corporation, Cumilla",
+  "city": "Cumilla",
+  "state": "Cumilla",
+  "user_id": "00faacde-00da-4e1f-b7c8-82e9700a6a06"
+}
+
+###
+POST {{baseurl}}/client
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "first_name":"Harun",
+  "last_name":"Hasan",
+  "userName":"testClient",
+  "dob":"1997-10-15",
+  "contact_number":"01515279018",
+  "client_role_id": "6b7ec0e1-5e79-4dac-a267-5cc5be4f3b1e",
+  "email":"testClient@gmail.com",
+  "password": "1234567sd89"
+}
+
+###
+PATCH {{baseurl}}/client/bc6340a6-f7b0-4625-8a7e-892817c11dcd
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "first_name":"Harun"
+}
+
+### 
+GET {{baseurl}}/notices?includes=sender
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+### 
+GET {{baseurl}}/notices/385a4e71-8409-4f66-b949-18fd6da8f620
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+###
+POST {{baseurl}}/notices
+Content-Type: application/json 
+Authorization: bearer {{token}}
+
+{
+  "issue_date": "2023-11-29T12:00:00.000Z",
+  "subject": "string",
+  "status":"DRAFT",
+  "content": "<h1>hello</h1>",
+  "recipient_ids": ["22b5e2d5-8df0-475a-8020-3bd5ae6e8cf9", "eb51cf7b-6368-4e3a-8734-a12585410670"],
+  "sender_id": "22b5e2d5-8df0-475a-8020-3bd5ae6e8cf9"
+}
+
+### 
+PATCH  {{baseurl}}/notices/2f3d99a6-0f1e-4fda-a4b5-ab900e00dddd/pinned
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "is_pinned": false
+}
+
+### 
+GET   {{baseurl}}/notices/pinned
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
+###
+POST {{baseurl}}/auth/forgot-password
+Content-Type: application/json 
+
+{
+  "email": "tanvir@gmail.com"
+}
+
+###
+POST {{baseurl}}/auth/reset-password/:token
+Content-Type: application/json 
+
+{
+  "password": "12345678",
+  "confirm_password": "12345678"
+}

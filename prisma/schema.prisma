@@ -1,0 +1,521 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+model User {
+  id                       String                        @id @unique @default(uuid())
+  created_at               DateTime                      @default(now())
+  updated_at               DateTime                      @updatedAt
+  first_name               String
+  last_name                String
+  userName                 String                        @unique
+  email                    String                        @unique
+  dob                      String?
+  fathers_name             String?
+  mothers_name             String?
+  blood_group              String?
+  contact_number           String?
+  emergency_contact_number String?
+  nid                      String?                       @unique
+  present_address          String?
+  permanent_address        String?
+  tshirt                   TSHIRT?
+  tin_number               String?                       @unique
+  gender                   GENDER                        @default(MALE)
+  password                 String?
+  is_registered            Boolean                       @default(true)
+  marital_status           MARITIAL_STATUS?              @default(SINGLE)
+  profile_picture          String?
+  religion                 RELIGION                      @default(ISLAM)
+  current_employee_id      String?                       @unique
+  current_status           USER_CURRENT_STATUS?          @default(ACTIVE)
+  billing_info             Billing_Info?
+  reporting_officers       Employee_Info[]               @relation("reportingOfficers")
+  employment_infos         Employee_Info[]
+  feedBacks                Feedback[]
+  invoice_receiver         Invoice[]                     @relation("ReceivedBy")
+  invoices                 Invoice[]
+  notice_sender            Notice[]                      @relation("NoticeSentBy")
+  salary_certificates      Salary_Certificate?
+  notification_preference  User_Notification_Preference?
+  user_roles               User_Role[]
+  social_media             USER_SCOCIAL_MEDIA?
+  current_employment_info  Employee_Info?                @relation("currentEmploymentInfo", fields: [current_employee_id], references: [id])
+  NoticeRecipient          NoticeRecipient[]
+  ForgotPassword           ForgotPassword?
+
+  @@map("users")
+}
+
+model Role {
+  id          String      @id @unique @default(uuid())
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  name        String
+  description String?
+  user_roles  User_Role[]
+
+  @@map("roles")
+}
+
+model Employee_Info {
+  id                             String                            @id @unique @default(uuid())
+  created_at                     DateTime                          @default(now())
+  updated_at                     DateTime                          @updatedAt
+  employee_id                    String                            @unique
+  user_id                        String
+  reporting_officer_id           String
+  joined_at                      DateTime
+  left_at                        DateTime?
+  work_type                      WORK_TYPE                         @default(OFFICE)
+  branch_id                      String
+  department_id                  String
+  isCurrent                      Boolean                           @default(true)
+  employee_number                Int
+  current_designation_id         String?
+  current_salary                 Int?                              @default(5000)
+  attendences                    Attendance[]
+  bonuses                        Bonus[]
+  employee_designations_salaries Employee_Designation_And_Salary[]
+  branch                         Branch                            @relation(fields: [branch_id], references: [id])
+  current_employee_designation   Designation?                      @relation(fields: [current_designation_id], references: [id])
+  department                     Department                        @relation(fields: [department_id], references: [id])
+  reporting_officer              User                              @relation("reportingOfficers", fields: [reporting_officer_id], references: [id])
+  user                           User                              @relation(fields: [user_id], references: [id])
+  approved_leaves                Leave[]                           @relation("action_taken")
+  leaves                         Leave[]
+  payrolls                       Payroll[]
+  current_employment_info        User?                             @relation("currentEmploymentInfo")
+  teams                          Team[]                            @relation("EmployeeTeam")
+
+  @@index([branch_id], map: "employee_infos_branch_id_fkey")
+  @@index([current_designation_id], map: "employee_infos_current_designation_id_fkey")
+  @@index([department_id], map: "employee_infos_department_id_fkey")
+  @@index([reporting_officer_id], map: "employee_infos_reporting_officer_id_fkey")
+  @@index([user_id], map: "employee_infos_user_id_fkey")
+  @@map("employee_infos")
+}
+
+model Leave {
+  id                 String         @id @unique @default(uuid())
+  created_at         DateTime       @default(now())
+  updated_at         DateTime       @updatedAt
+  started_at         DateTime
+  ended_at           DateTime
+  employee_id        String
+  action_taken_by_id String?
+  leave_type         LEAVE_TYPE
+  leave_status       LEAVE_STATUS?
+  description        String?
+  action_taken_by    Employee_Info? @relation("action_taken", fields: [action_taken_by_id], references: [id], onDelete: Cascade)
+  employee_info      Employee_Info  @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+
+  @@index([action_taken_by_id], map: "Leave_action_taken_by_id_fkey")
+  @@index([employee_id], map: "Leave_employee_id_fkey")
+  @@map("leaves")
+}
+
+model Payroll {
+  id            String         @id @unique @default(uuid())
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  salary        Int
+  status        PAYROLL_STATUS @default(DRAFT)
+  date          DateTime
+  employee_id   String
+  employee_info Employee_Info  @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+
+  @@index([employee_id], map: "payrolls_employee_id_fkey")
+  @@map("payrolls")
+}
+
+model Bonus {
+  id            String        @id @unique @default(uuid())
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
+  bonus         Int           @default(0)
+  date          DateTime
+  status        BONUS_STATUS  @default(DRAFT)
+  employee_id   String
+  reason        String
+  employee_info Employee_Info @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+
+  @@index([employee_id], map: "bonuses_employee_id_fkey")
+  @@map("bonuses")
+}
+
+model Employee_Designation_And_Salary {
+  id             String                    @id @unique @default(uuid())
+  created_at     DateTime                  @default(now())
+  updated_at     DateTime                  @updatedAt
+  employee_id    String
+  designation_id String
+  salary         Int                       @default(5000)
+  reason         EMPLOYEE_PROMOTION_REASON @default(JOINING)
+  designation    Designation               @relation(fields: [designation_id], references: [id], onDelete: Cascade)
+  employee_info  Employee_Info             @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+
+  @@index([designation_id], map: "employee_designations_and_salaries_designation_id_fkey")
+  @@index([employee_id], map: "employee_designations_and_salaries_employee_id_fkey")
+  @@map("employee_designations_and_salaries")
+}
+
+model Designation {
+  id                             String                            @id @unique @default(uuid())
+  created_at                     DateTime                          @default(now())
+  updated_at                     DateTime                          @updatedAt
+  name                           String
+  employee_designations_salaries Employee_Designation_And_Salary[]
+  current_employees              Employee_Info[]
+
+  @@map("designations")
+}
+
+model User_Role {
+  user_id String
+  role_id String
+  role    Role   @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, role_id])
+  @@index([user_id, role_id])
+  @@index([role_id], map: "user_roles_role_id_fkey")
+  @@map("user_roles")
+}
+
+model Department {
+  id          String          @id @unique @default(uuid())
+  created_at  DateTime        @default(now())
+  updated_at  DateTime        @updatedAt
+  name        String
+  description String?
+  code        String          @unique
+  prefix_code String          @unique
+  employees   Employee_Info[]
+
+  @@map("departments")
+}
+
+model Team {
+  id          String          @id @unique @default(uuid())
+  created_at  DateTime        @default(now())
+  updated_at  DateTime        @updatedAt
+  name        String
+  description String?
+  employees   Employee_Info[] @relation("EmployeeTeam")
+
+  @@map("teams")
+}
+
+model Branch {
+  id         String          @id @unique @default(uuid())
+  created_at DateTime        @default(now())
+  updated_at DateTime        @updatedAt
+  code       String          @unique
+  name       String
+  address    String?
+  employees  Employee_Info[]
+
+  @@map("branches")
+}
+
+model Attendance {
+  id                String        @id @unique @default(uuid())
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+  date              DateTime
+  employee_id       String
+  entry_time        String
+  exit_time         String?
+  work_descriptions String?       @db.Text
+  work_type         WORK_TYPE     @default(OFFICE)
+  markings          Float?
+  break_duration    Float?
+  reason_of_break   String?       @db.Text
+  work_plan         String?       @db.Text
+  employee_info     Employee_Info @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+
+  @@unique([employee_id, date])
+  @@map("attendences")
+}
+
+model User_Notification_Preference {
+  id                String   @id @unique @default(uuid())
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+  user_id           String   @unique
+  email             Boolean  @default(true)
+  sms               Boolean  @default(true)
+  db_notification   Boolean  @default(true)
+  push_notification Boolean  @default(true)
+  user              User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("user_notification_preferences")
+}
+
+model Document_Association {
+  id          String                         @id @unique @default(uuid())
+  type        DOCUMENT_ASSOCIATION_USER_TYPE @default(DILIGITE)
+  type_id     String?
+  document_id String
+  document    Document                       @relation(fields: [document_id], references: [id], onDelete: Cascade)
+  notice_id   String?
+  notice      Notice?                        @relation(fields: [notice_id], references: [id], onDelete: Cascade)
+
+  @@index([document_id], map: "document_assosciations_document_id_fkey")
+  @@map("document_assosciations")
+}
+
+model Document {
+  id                    String                 @id @unique @default(uuid())
+  created_at            DateTime               @default(now())
+  updated_at            DateTime               @updatedAt
+  document_name         String
+  mime_type             String
+  size                  Int
+  file_path             String                 @unique
+  document_associations Document_Association[]
+
+  @@index([document_name, mime_type])
+  @@map("documents")
+}
+
+model Feedback {
+  id            String        @id @unique @default(uuid())
+  user_id       String
+  created_at    DateTime      @default(now())
+  feedback_type FEEDBACK_TYPE
+  description   String        @db.Text
+  user          User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id], map: "feedbacks_user_id_fkey")
+  @@map("feedbacks")
+}
+
+model Invoice {
+  id                String                 @id @unique
+  updated_at        DateTime               @updatedAt
+  created_at        DateTime               @default(now())
+  issue_date        DateTime
+  invoice_subject   String
+  invoice_items     Json
+  sub_total         Float
+  tax_percentage    Float                  @default(15)
+  discount_type     INVOICE_DISCOUNT_TYPE?
+  discount          Float?
+  total             Float
+  note              String?                @db.Text
+  user_id           String
+  status            INVOICE_STATUS         @default(DRAFT)
+  amount_paid       Float?
+  due_date          DateTime
+  parent_invoice_id String?
+  received_by_id    String?
+  parent_invoice    Invoice?               @relation("ParentInvoice", fields: [parent_invoice_id], references: [id], onDelete: Cascade)
+  child_invoices    Invoice[]              @relation("ParentInvoice")
+  received_by       User?                  @relation("ReceivedBy", fields: [received_by_id], references: [id], onDelete: Cascade)
+  user              User                   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([parent_invoice_id], map: "invoices_parent_invoice_id_fkey")
+  @@index([received_by_id], map: "invoices_received_by_id_fkey")
+  @@index([user_id], map: "invoices_user_id_fkey")
+  @@map("invoices")
+}
+
+model Billing_Info {
+  id             String   @id @unique @default(uuid())
+  updated_at     DateTime @updatedAt
+  created_at     DateTime @default(now())
+  user_id        String   @unique
+  address_line_1 String
+  address_line_2 String?
+  city           String?
+  state          String?
+  country        String?
+  zip_code       String?
+  user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("billing_infos")
+}
+
+model Salary_Certificate {
+  id                  String                     @id @unique @default(uuid())
+  updated_at          DateTime                   @updatedAt
+  created_at          DateTime                   @default(now())
+  user_id             String                     @unique
+  current_salary      Int
+  current_designation String
+  issue_date          DateTime
+  reason              String                     @db.Text
+  status              SALARY_CERTIFICATE_STATUS?
+  user                User                       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, issue_date, current_designation])
+  @@map("salary_certificates")
+}
+
+model USER_SCOCIAL_MEDIA {
+  id       String  @id @unique @default(uuid())
+  user_id  String  @unique
+  facebook String?
+  linkedin String?
+  user     User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("user_social_medias")
+}
+
+model Notice {
+  id          String                 @id @unique @default(uuid())
+  subject     String
+  content     String                 @db.LongText
+  created_at  DateTime               @default(now())
+  updated_at  DateTime               @updatedAt
+  issue_date  DateTime
+  is_pinned   Boolean                @default(false)
+  status      NOTICE_STATUS
+  attachments Document_Association[]
+  sender_id   String
+  sender      User                   @relation("NoticeSentBy", fields: [sender_id], references: [id], onDelete: Cascade)
+  recipients  NoticeRecipient[]
+
+  @@map("notices")
+}
+
+model NoticeRecipient {
+  id           String @id @unique @default(uuid())
+  notice       Notice @relation(fields: [notice_id], references: [id])
+  notice_id    String @map("noticeId")
+  recipient    User   @relation(fields: [recipient_id], references: [id])
+  recipient_id String @map("recipientId")
+
+  @@unique([notice_id, recipient_id])
+  @@map("notice_recipients")
+}
+
+model ForgotPassword {
+  id                   String    @id @unique @default(uuid())
+  user_id              String    @unique
+  user                 User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  password_reset_token String?   @db.Text
+  token_expiry_time    DateTime?
+
+  @@map("forgot_password")
+}
+
+enum SALARY_CERTIFICATE_STATUS {
+  APPROVED
+  DECLINED
+}
+
+enum INVOICE_STATUS {
+  DRAFT
+  SENT
+  IN_PROGRESS
+  ARCHIVE
+  PARTIALLY_PAID
+  PAID
+}
+
+enum INVOICE_DISCOUNT_TYPE {
+  PERCENTAGE
+  AMOUNT
+}
+
+enum NOTICE_STATUS {
+  DRAFT
+  SENT
+}
+
+enum FEEDBACK_TYPE {
+  BUG
+  FEATURE
+}
+
+enum MARITIAL_STATUS {
+  MARRIED
+  SINGLE
+  DIVORCED
+}
+
+enum GENDER {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum USER_CURRENT_STATUS {
+  ACTIVE
+  ON_LEAVE
+  TERMINATED
+  RESIGNED
+  LEFT
+}
+
+enum TSHIRT {
+  XS
+  S
+  L
+  XL
+  XXL
+  XXXL
+}
+
+enum RELIGION {
+  ISLAM
+  HINDUISM
+  BUDDHISM
+  CHIRSTIANITY
+}
+
+enum WORK_TYPE {
+  REMOTE
+  OFFICE
+}
+
+enum EMPLOYEE_PROMOTION_REASON {
+  JOINING
+  PERMANENT
+  PERFORMANCE_PROMOTION
+  PERFORMANCE_DEMOTION
+  EXPERIENCE_PROMOTION
+  REVISED
+}
+
+enum PAYROLL_STATUS {
+  DRAFT
+  SENT
+  IN_PROGRESS
+  ARCHIVE
+}
+
+enum BONUS_STATUS {
+  DRAFT
+  SENT
+  IN_PROGRESS
+  ARCHIVE
+}
+
+enum LEAVE_TYPE {
+  CASUAL
+  SICK
+}
+
+enum LEAVE_STATUS {
+  APPROVED
+  DECLIEND
+}
+
+enum DOCUMENT_ASSOCIATION_USER_TYPE {
+  USER
+  EMPLOYEE
+  DILIGITE
+  NOTICE
+}

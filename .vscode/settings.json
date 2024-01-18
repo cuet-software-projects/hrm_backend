@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "cSpell.words": ["bycrpt", "queryparams"],
+  "files.associations": {
+    "*.txt": "plaintext"
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": false
+  }
+}
